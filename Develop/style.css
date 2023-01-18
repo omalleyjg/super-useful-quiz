@@ -1,27 +1,4 @@
-body{
-    text-align: center;
-    padding-top: 250px;
-}
-
-h1{
-    width: 200px;
-    height: 40px;
-    display: inline-block;
-    text-align: center;
-    background-color: blueviolet;
-    color: white;
-    border: 5px;
-    border-color: black;
-    border-style: solid;
-    border-radius: 20px;
-}
-
-button{
-    background-color: red;
-    width: 150px;
-    height: 30px;
-    border-radius: 20px;
-    border: 5px;
-    border-style: solid;
-    border-color: black;
+*, *::before, *::after{
+    box-sizing: border-box;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
