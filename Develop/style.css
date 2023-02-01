@@ -4,6 +4,7 @@
 }
 
 body{
+    background-color: teal;
     padding: 0;
     margin: 0;
     display: flex;
@@ -14,8 +15,10 @@ body{
 }
 
 .container{
-    width: 800px;
+    width: 900px;
     max-width: 80%;
+    height: 600px;
+    max-height: 70%;
     background-color: white;
     border-radius: 5px;
     padding: 10px;
@@ -35,7 +38,7 @@ body{
     outline: none;
 }
 
-.start-btn, .next-btn{
+.start-btn, .next-btn, .highscore-btn, .time{
     font-size: 1.5rem;
     font-weight: bold;
     padding: 10px 20px;
@@ -49,5 +52,4 @@ body{
 
 .hide{
     display: none;
-
 }
