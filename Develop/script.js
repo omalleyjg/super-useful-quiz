@@ -1,38 +1,3 @@
-const startButton = document.getElementById('start-btn')
-const questionContainerElement = document.getElementById('question-container')
-const questionElement = document.getElementById('question')
-const answerButtonsElement = document.getElementById('answer-buttons')
-
-let shuffleQuestions, currentQuestionIndex;
-
-
-startButton.addEventListener('click', startGame, startTimer)
-
-//1. start game
-function startGame() {
-    console.log('started');
-    startButton.classList.add('hide');
-    shuffleQuestions = questions.sort(() => Math.random() - .5);
-    currentQuestionIndex = 0;
-    questionContainerElement.classList.remove('hide');
-    setNextQuestion();
-}
-
-//2. start countdown timer
-function startTimer(){
-
-}
-//  a. timer takes away time for wrong answer
-//  b. displays game over message when timer reaches zero
-//3. display question with answers
-function setNextQuestion() {
-    showQuestion(shuffleQuestions[currentQuestionIndex])
-}
-
-function showQuestion(question){
-questionElement.innerText = question.question;
-}
-
 const questions = [
     {
         question: "Commonly used data types DO NOT include:",
@@ -67,9 +32,81 @@ const questions = [
 ];
 
 
+var startButton = document.getElementById('start-btn')
+var nextButton = document.getElementById('next-btn')
+var questionContainerElement = document.getElementById('question-container')
+var questionElement = document.getElementById('question')
+var answerButtonsElement = document.getElementById('answer-buttons')
+var timerEl = document.getElementById('timer')
+
+let shuffleQuestions, currentQuestionIndex;
+
+
+startButton.addEventListener('click', startGame, startTimer);
+
+//1. start game
+function startGame() {
+
+    console.log('started');
+    startButton.classList.add('hide');
+    shuffleQuestions = questions.sort(() => Math.random() - .5);
+    currentQuestionIndex = 0;
+    questionContainerElement.classList.remove('hide');
+    startTimer();
+    setNextQuestion();
+}
+
+//2. start countdown timer
+function startTimer() {
+    timerEl.classList.remove('hide');
+    var timeLeft = 5;
+    //  a. timer takes away time for wrong answer
+    var timeInterval = setInterval(function () {
+        if (timeLeft > 0) {
+            timerEl.textContent = 'Time: ' + timeLeft;
+            timeLeft--;
+        } else {
+            timerEl.textContent = '';
+            clearInterval(timeInterval);
+            //  b. displays game over message when timer reaches zero
+            endGame();
+        }
+    }, 1000);
+
+}
+
+
+//3. display question with answers
+function setNextQuestion() {
+    showQuestion(shuffleQuestions[currentQuestionIndex]);
+}
+
+function showQuestion(question) {
+    questionElement.innerText = question.question;
+    question.answer.array.forEach(function (choices, i){
+        var button = document.createElement('button')
+        button.innerText = answer.text
+        button.classList.add('btn')
+        if (answer.correct){
+            button.dataset.correct = answer.correct
+        }
+        button.addEventListener('click', selectAnswer)
+        answerButtonsElement.appendChild(button)
+    });
+}
+
+
+
+
+
 function selectAnswer() {
 
 }
 //  a. after question is answered correctly display next question
 //  b. repeat last function until game is complete
 //4. after game is finished allow user to save initials and view highscores
+
+
+function endGame() {
+
+}

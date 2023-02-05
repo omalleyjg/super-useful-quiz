@@ -38,7 +38,7 @@ body{
     outline: none;
 }
 
-.start-btn, .next-btn, .highscore-btn, .time{
+.start-btn, .next-btn, .highscore-btn, .timer{
     font-size: 1.5rem;
     font-weight: bold;
     padding: 10px 20px;
