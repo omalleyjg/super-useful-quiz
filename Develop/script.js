@@ -33,7 +33,6 @@ const questions = [
 
 
 var startButton = document.getElementById('start-btn')
-var nextButton = document.getElementById('next-btn')
 var questionContainerElement = document.getElementById('question-container')
 var questionElement = document.getElementById('question')
 var answerButtonsElement = document.getElementById('answer-buttons')
@@ -46,8 +45,7 @@ startButton.addEventListener('click', startGame, startTimer);
 
 //1. start game
 function startGame() {
-
-    console.log('started');
+    console.log("game started")
     startButton.classList.add('hide');
     shuffleQuestions = questions.sort(() => Math.random() - .5);
     currentQuestionIndex = 0;
@@ -59,7 +57,7 @@ function startGame() {
 //2. start countdown timer
 function startTimer() {
     timerEl.classList.remove('hide');
-    var timeLeft = 5;
+    var timeLeft = 30;
     //  a. timer takes away time for wrong answer
     var timeInterval = setInterval(function () {
         if (timeLeft > 0) {
@@ -69,8 +67,9 @@ function startTimer() {
             timerEl.textContent = '';
             clearInterval(timeInterval);
             //  b. displays game over message when timer reaches zero
+            if (timeLeft === 0) {
             endGame();
-        }
+        }}
     }, 1000);
 
 }
@@ -79,34 +78,70 @@ function startTimer() {
 //3. display question with answers
 function setNextQuestion() {
     showQuestion(shuffleQuestions[currentQuestionIndex]);
+    console.log("question appears")
 }
 
 function showQuestion(question) {
-    questionElement.innerText = question.question;
-    question.answer.array.forEach(function (choices, i){
-        var button = document.createElement('button')
-        button.innerText = answer.text
-        button.classList.add('btn')
-        if (answer.correct){
-            button.dataset.correct = answer.correct
-        }
-        button.addEventListener('click', selectAnswer)
-        answerButtonsElement.appendChild(button)
+ 
+    questionElement.innerText = question.question
+    question.choices.forEach(function(choices, i) {
+
+        var choiceBtn = document.createElement("button");
+        choiceBtn.setAttribute("value", choices);
+        choiceBtn.textContent = i + 1 + ". " + choices;
+        choiceBtn.onclick = selectAnswer;
+        answerButtonsElement.appendChild(choiceBtn);
     });
+
+    //   const button = document.createElement('button')
+    //   button.innerText = ""
+    //   button.classList.add('btn')
+    // //   if (answer.correct) {
+    // //     button.dataset.correct = answer.correct
+    // //   }
+    //   button.addEventListener('click', selectAnswer)
+    //   answerButtonsElement.appendChild(button)
+    // })
+    console.log("answers appear")
+  }
+
+function resetState(){
+    nextButton.classList.add('hide');
+    while (answerButtonsElement.firstChild) {
+        answerButtonsElement.removeChild
+        (answerButtonsElement.firstChild);
+    }
 }
 
 
 
-
-
-function selectAnswer() {
-
+function selectAnswer(e) {
+    console.log("answers selected")
+    var selectedButton = e.target
+    var correct = selectedButton.dataset.correct
+    setStatusClass(document.body, correct)
+    Array.from(answerButtonsElement.children).forEach(button => {
+        setStatusClass(button, button.dataset.correct)
+    })
 }
+
+function setStatusClass(element, correct) {
+    clearStatusClass(element)
+    if (correct) {
+      element.classList.add('correct')
+    } else {
+      element.classList.add('wrong')
+    }
+  }
+
+  function clearStatusClass(element) {
+    element.classList.remove('correct')
+    element.classList.remove('wrong')
+  }
+  
 //  a. after question is answered correctly display next question
 //  b. repeat last function until game is complete
 //4. after game is finished allow user to save initials and view highscores
-
-
 function endGame() {
-
+console.log("game over")
 }
