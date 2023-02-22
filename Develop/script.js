@@ -1,4 +1,4 @@
-const questions = [
+var questions = [
     {
         question: "Commonly used data types DO NOT include:",
         choices: ["strings", "booleans", "alerts", "numbers"],
@@ -37,6 +37,7 @@ var questionContainerElement = document.getElementById('question-container')
 var questionElement = document.getElementById('question')
 var answerButtonsElement = document.getElementById('answer-buttons')
 var timerEl = document.getElementById('timer')
+var timeLeft = 10;
 
 let shuffleQuestions, currentQuestionIndex;
 
@@ -57,19 +58,21 @@ function startGame() {
 //2. start countdown timer
 function startTimer() {
     timerEl.classList.remove('hide');
-    var timeLeft = 30;
+
     //  a. timer takes away time for wrong answer
     var timeInterval = setInterval(function () {
         if (timeLeft > 0) {
             timerEl.textContent = 'Time: ' + timeLeft;
             timeLeft--;
-        } else {
-            timerEl.textContent = '';
-            clearInterval(timeInterval);
             //  b. displays game over message when timer reaches zero
-            if (timeLeft === 0) {
-            endGame();
-        }}
+            if (timeLeft <= 0) {
+                timerEl.classList.add("hide")
+                questionContainerElement.classList.add("hide")
+                console.log("ran out of time")
+                endGame();
+   
+            }
+        }
     }, 1000);
 
 }
@@ -77,14 +80,16 @@ function startTimer() {
 
 //3. display question with answers
 function setNextQuestion() {
-    showQuestion(shuffleQuestions[currentQuestionIndex]);
     console.log("question appears")
+    resetState();
+    showQuestion(shuffleQuestions[currentQuestionIndex]);
+    
 }
 
 function showQuestion(question) {
- 
+
     questionElement.innerText = question.question
-    question.choices.forEach(function(choices, i) {
+    question.choices.forEach(function (choices, i) {
 
         var choiceBtn = document.createElement("button");
         choiceBtn.setAttribute("value", choices);
@@ -92,56 +97,38 @@ function showQuestion(question) {
         choiceBtn.onclick = selectAnswer;
         answerButtonsElement.appendChild(choiceBtn);
     });
-
-    //   const button = document.createElement('button')
-    //   button.innerText = ""
-    //   button.classList.add('btn')
-    // //   if (answer.correct) {
-    // //     button.dataset.correct = answer.correct
-    // //   }
-    //   button.addEventListener('click', selectAnswer)
-    //   answerButtonsElement.appendChild(button)
-    // })
     console.log("answers appear")
-  }
-
-function resetState(){
-    nextButton.classList.add('hide');
-    while (answerButtonsElement.firstChild) {
-        answerButtonsElement.removeChild
-        (answerButtonsElement.firstChild);
-    }
 }
 
-
-
-function selectAnswer(e) {
-    console.log("answers selected")
-    var selectedButton = e.target
-    var correct = selectedButton.dataset.correct
-    setStatusClass(document.body, correct)
-    Array.from(answerButtonsElement.children).forEach(button => {
-        setStatusClass(button, button.dataset.correct)
-    })
-}
-
-function setStatusClass(element, correct) {
-    clearStatusClass(element)
-    if (correct) {
-      element.classList.add('correct')
+function selectAnswer() {
+    if (this.value !== questions[currentQuestionIndex].answer) {
+        console.log("wrong")
+        timeLeft -= 10
+        timerEl.textContent = 'Time: ' + timeLeft;
+    if (currentQuestionIndex === questions.length) {
+      endGame();
+    } 
     } else {
-      element.classList.add('wrong')
+        console.log("correct")
+        currentQuestionIndex++;
+        setNextQuestion();
     }
-  }
+}
 
-  function clearStatusClass(element) {
-    element.classList.remove('correct')
-    element.classList.remove('wrong')
-  }
-  
+
+
+
+
+function resetState() {
+    while (answerButtonsElement.firstChild) {
+        answerButtonsElement.removeChild(answerButtonsElement.firstChild)
+    }
+}
+
 //  a. after question is answered correctly display next question
 //  b. repeat last function until game is complete
 //4. after game is finished allow user to save initials and view highscores
 function endGame() {
-console.log("game over")
+
+    console.log("game over")
 }
